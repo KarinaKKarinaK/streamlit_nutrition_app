@@ -1,5 +1,6 @@
 import sqlite3
 import hashlib
+import streamlit as st
 
 # Create and connect to SQLite database
 def create_database():
@@ -38,9 +39,10 @@ def create_user(username, password):
         conn.commit()
         return True
     except sqlite3.IntegrityError:
-        return False
+        return False  # Username already exists, return False
     finally:
         conn.close()
+
 
 # Function to check user login
 def check_login(username, password):
@@ -50,7 +52,15 @@ def check_login(username, password):
     c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, hashed_pw))
     user = c.fetchone()
     conn.close()
+
+    if st.button("Login"):
+        if check_login(username, password):
+            st.session_state.username = username
+            st.experimental_rerun()  # Reload to show the calorie tracker
+        else:
+            st.error("Invalid login credentials. Please try again.")
     return user is not None
+
 
 # Function to log food entry
 def log_food(username, food_name, calories, protein, fats, fiber):
