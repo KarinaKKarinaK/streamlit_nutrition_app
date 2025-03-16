@@ -7,6 +7,8 @@ st.set_page_config(page_title="Calorie Counter", layout="centered")
 # Login or Register Section
 st.title("Calorie Counter App")
 
+#Adding a comment
+
 # Sidebar Navigation
 menu = ["Login", "Register"]
 choice = st.sidebar.selectbox("Menu", menu)
